@@ -20,22 +20,19 @@ public class LevelPlayerStatusProcessor extends PlayerStatusProcessor implements
 
     public LevelPlayerStatusProcessor(final CurrentPlayerStatus status) {
         super(status);
-        MessageManager.getInstance().addListener(this, MessageType.FINISH_LEVEL.code());
     }
 
     @Override
     public void doUpdate(final Entity entity) {
         // No time or lives left: game over
         if ((getStatus().getTime() < 0 || getStatus().getLives() < 1) && !gameOverSignaled) {
-            MessageManager.getInstance().dispatchMessage(this, MessageType.GAME_OVER.code());
+            MessageManager.getInstance().dispatchMessage( this, MessageType.GAME_OVER.code());
             gameOverSignaled = true;
         }
     }
 
     @Override
     public boolean handleMessage(final Telegram msg) {
-        getStatus().setTime(PlayerStatus.DEFAULT_TIME);
-        MessageManager.getInstance().dispatchMessage(this, MessageType.BEGIN_LEVEL.code());
         return true;
     }
 }

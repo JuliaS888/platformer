@@ -47,7 +47,11 @@ public class SantaPhysicsProcessor implements PhysicsProcessor {
 
         if (character.getBody().getPosition().y < DEATH_ALTITUDE) {
             MessageManager.getInstance().dispatchMessage(null, MessageType.DEAD.code(), character);
-        } else {
+        }
+        else if(character.getBody().getPosition().x > 179f){ //за этой границей расположен выход
+            MessageManager.getInstance().dispatchMessage(null, MessageType.FINISH_LEVEL.code());
+        }
+        else {
             // Cap maximum velocity on X axis
             if (Math.abs(velocity.x) > MAX_VELOCITY.x) {
                 velocity.x = Math.signum(velocity.x) * MAX_VELOCITY.x;
@@ -121,48 +125,10 @@ public class SantaPhysicsProcessor implements PhysicsProcessor {
                 (contact.getFixtureB().getBody().getFixtureList().size > 1 && PLATFORM_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData())))) {
             groundContacts++;
         }
-        
-        /* Fixture fd = contact.getFixtureA();
-        boolean b1 = FOOT_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData());
-        boolean b2 = FOOT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData());
-        boolean b3 = GROUND_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData());
-        boolean b4 = GROUND_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData());
-        boolean b5 = PLATFORM_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData());
-        boolean b6 = PLATFORM_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData());*/
-        
-        // Foot sensor is touching the ground
-        /*if (FOOT_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                FOOT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()) &&
-                (GROUND_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                GROUND_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()) ||
-                FOOT_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                FOOT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()) &&
-                PLATFORM_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                PLATFORM_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()))) {
-            groundContacts++;
-        }*/
-        
-            // Foot sensor is touching the ground
-       /* if (FOOT_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                FOOT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()) &&
-                PLATFORM_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                PLATFORM_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData())){
-            groundContacts++;
-        }*/
     }
 
     @Override
     public void endContact(final Contact contact) {
-       /*if (FOOT_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                FOOT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()) &&
-                (GROUND_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                GROUND_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()) ||
-                FOOT_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                FOOT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()) &&
-                PLATFORM_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) ||
-                PLATFORM_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()))) {
-            groundContacts--;
-        }*/
        if ((contact.getFixtureA().getBody().getFixtureList().size > 1 && FOOT_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData())) ||
                 (contact.getFixtureB().getBody().getFixtureList().size > 1 && FOOT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData())) &&
                 ((contact.getFixtureA().getBody().getFixtureList().size > 1 && GROUND_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData())) ||
@@ -180,14 +146,6 @@ public class SantaPhysicsProcessor implements PhysicsProcessor {
 
     @Override
     public void preSolve(final Contact contact, final Manifold oldManifold) {
-        // TODO Auto-generated method stub
-        /*Fixture f;
-        if(contact.getFixtureA().getBody().getFixtureList().size > 11){
-            f=contact.getFixtureA().getBody().getFixtureList().get(12);
-        }
-        else if(contact.getFixtureB().getBody().getFixtureList().size > 11){
-            f=contact.getFixtureB().getBody().getFixtureList().get(12);
-        }*/
         if((contact.getFixtureA().getBody().getFixtureList().size > 11 && contact.getFixtureB().getBody().getFixtureList().size > 1 && "head".equals(contact.getFixtureA().getBody().getFixtureList().get(12).getUserData())&& "obstruction".equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()))||
             (contact.getFixtureB().getBody().getFixtureList().size > 11 && contact.getFixtureA().getBody().getFixtureList().size > 1 && "head".equals(contact.getFixtureB().getBody().getFixtureList().get(12).getUserData())&& "obstruction".equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()))){
             System.out.println("head-obstruction");

@@ -37,11 +37,9 @@ public class GiftPhysicsProcessor implements PhysicsProcessor{
                 (contact.getFixtureA().getBody().getFixtureList().size > 1 && GIFT_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData()) )
                 ) {
             collectGift(contact.getFixtureA());
-            //System.out.println("gift");
         } else if (GIFT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(0).getUserData()) ||
                 (contact.getFixtureA().getBody().getFixtureList().size > 1 && GIFT_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData()))) {
             collectGift(contact.getFixtureB());
-            //System.out.println("gift");
         }
     }
 

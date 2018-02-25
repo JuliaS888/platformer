@@ -23,6 +23,8 @@ import com.mygdx.platformer.entity.Direction;
 import com.mygdx.platformer.entity.Entity;
 import com.mygdx.platformer.fsm.SantaState;
 import com.mygdx.platformer.msg.MessageType;
+import java.util.ArrayList;
+import java.util.Collection;
 import net.dermetfan.gdx.graphics.g2d.AnimatedBox2DSprite;
 import net.dermetfan.gdx.graphics.g2d.AnimatedSprite;
 import net.dermetfan.gdx.graphics.g2d.Box2DSprite;
@@ -37,7 +39,8 @@ public class SantaGraphicsProcessor implements GraphicsProcessor, Telegraph {
     private static final String RUN_REGION = "run";
     private static final String JUMP_REGION = "jump";
     //private static final Vector2 RESPAWN_POSITION = new Vector2(0.6f, 3.2f); //место появления игрока
-    private static final Vector2 RESPAWN_POSITION = /*new Vector2(175f, 9f);*/new Vector2(0.6f, 10f); //место появления игрока
+    private Vector2 RESPAWN_POSITION = new Vector2(175.5f, 9f);/*new Vector2(0.6f, 10f)*/; //место появления игрока //179.5
+    private  ArrayList<Vector2> array_respawn = new ArrayList<Vector2>();
 
     private final TextureAtlas textureAtlas;
     private final Box2DSprite standingSprite;
@@ -48,8 +51,12 @@ public class SantaGraphicsProcessor implements GraphicsProcessor, Telegraph {
     private final AnimatedBox2DSprite idleLeftSprite;
 
     // private final AnimatedBox2DSprite duckSprite;
-
+    private boolean isFinish;
     public SantaGraphicsProcessor(final AssetManager assets) {
+        //Добавить массив точек воскрешения
+        isFinish = false;
+        array_respawn.add(new Vector2(5.5f, 1f));
+        
         textureAtlas = assets.get(Assets.SANTA_ATLAS);
 
         Array<Sprite> walkingSprites = textureAtlas.createSprites(RUN_REGION);
@@ -90,7 +97,7 @@ public class SantaGraphicsProcessor implements GraphicsProcessor, Telegraph {
         idleLeftSprite.setSize(idleLeftSprite.getWidth() / PlatformManGame.PPM, idleLeftSprite.getHeight() / PlatformManGame.PPM);
         idleLeftSprite.setScale(0.2f, 0.2f);
         
-        MessageManager.getInstance().addListener(this, MessageType.DEAD.code());
+        MessageManager.getInstance().addListeners(this, MessageType.DEAD.code(),MessageType.FINISH_LEVEL.code());
     }
 
     /*
@@ -107,8 +114,15 @@ public class SantaGraphicsProcessor implements GraphicsProcessor, Telegraph {
         else{
             camera.position.x = character.getBody().getPosition().x + camera.viewportWidth * 0.25f;
             camera.position.y = character.getBody().getPosition().y + camera.viewportHeight * 0.05f;
+            
+            //контрольные точки сохранения
+            Vector2 p = character.getBody().getPosition();
+            for (int i = 0;i<array_respawn.size();i++){
+                if(Math.abs(p.x-array_respawn.get(i).x)<=0.5 && Math.abs(p.y-array_respawn.get(i).y)<=0.5 && array_respawn.get(i).x > RESPAWN_POSITION.x){
+                    RESPAWN_POSITION = array_respawn.get(i);
+                }
+            }
         }
-        //camera.position.x = character.getBody() == null ? 0.0f : character.getBody().getPosition().x + camera.viewportWidth * 0.25f;
     }
 
     /*
@@ -149,15 +163,21 @@ public class SantaGraphicsProcessor implements GraphicsProcessor, Telegraph {
                             Box2DUtils.width(character.getBody()) / (Direction.RIGHT.equals(character.getDirection())
                                             ? 2.8f : 1.55f),
             -frame.getHeight() * 0.12f + Box2DUtils.width(character.getBody()) + 0.36f);
-        frame.draw(batch, character.getBody());
+        if(!isFinish)
+            frame.draw(batch, character.getBody());
     }
 
     @Override
     public boolean handleMessage(final Telegram msg) {
-        Entity character = (Entity) msg.extraInfo;
-        character.getBody().setTransform(RESPAWN_POSITION, character.getBody().getAngle());
-        character.changeState(SantaState.IDLE);
-        character.setDirection(Direction.RIGHT);
+        if (msg.message == MessageType.DEAD.code()){ 
+            Entity character = (Entity) msg.extraInfo;
+            character.getBody().setTransform(RESPAWN_POSITION, character.getBody().getAngle());
+            character.changeState(SantaState.IDLE);
+            character.setDirection(Direction.RIGHT);
+        }
+        else if (msg.message == MessageType.FINISH_LEVEL.code()) {
+            isFinish = true; //для того, чтобы не отрисовывалось при финише
+        }
         return true;
     }
 

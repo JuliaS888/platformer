@@ -10,7 +10,7 @@ package com.mygdx.platformer.player;
  * @author Julia
  */
 public interface PlayerStatus {
-    public static final short DEFAULT_TIME = 6000;
+    public static final short DEFAULT_TIME = 600;
     public static final short DEFAULT_LIVES = 5;
     /**
      * Returns the count of gathered collectibles so far.

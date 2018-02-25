@@ -64,22 +64,23 @@ public class LevelPhysicsProcessor implements PhysicsProcessor {
 
     @Override
     public void beginContact(final Contact contact) {
-        if (!exitSignaled) {
+        /*if (!exitSignaled) {
             // Player has reach the end of the level
             if (EXIT_IDENTIFIER.equals(contact.getFixtureA().getUserData())) {
                 Entity character = (Entity) contact.getFixtureB().getBody().getUserData();
                 //MessageManager.getInstance().dispatchMessage(null, MessageType.EXIT.code(), character);
-                MessageManager.getInstance().dispatchMessage(null, MessageType.EXIT.code());
+                MessageManager.getInstance().dispatchMessage(null, MessageType.FINISH_LEVEL.code());
                 //character.changeState(SantaState.JUMP);
                 exitSignaled = true;
             } else if (EXIT_IDENTIFIER.equals(contact.getFixtureB().getUserData())) {
                 Entity character = (Entity) contact.getFixtureA().getBody().getUserData();
-                MessageManager.getInstance().dispatchMessage(null, MessageType.EXIT.code());
+                MessageManager.getInstance().dispatchMessage(null, MessageType.FINISH_LEVEL.code());
                 //MessageManager.getInstance().dispatchMessage(null, MessageType.EXIT.code(), character);
                 //character.changeState(SantaState.JUMP);
                 exitSignaled = true;
             }
-        }
+        }*/
+
     }
 
     @Override

@@ -22,7 +22,6 @@ public class EndScreenInputProcessor extends InputAdapter{
         switch (keycode) {
             case Keys.ENTER:
                 MessageManager.getInstance().dispatchMessage(MessageType.RESET.code());
-                //Gdx.input.setInputProcessor(null);
             break;
         }
         return super.keyDown(keycode);
