@@ -39,7 +39,7 @@ public class SantaGraphicsProcessor implements GraphicsProcessor, Telegraph {
     private static final String RUN_REGION = "run";
     private static final String JUMP_REGION = "jump";
     //private static final Vector2 RESPAWN_POSITION = new Vector2(0.6f, 3.2f); //место появления игрока
-    private Vector2 RESPAWN_POSITION = new Vector2(175.5f, 9f);/*new Vector2(0.6f, 10f)*/; //место появления игрока //179.5
+    private Vector2 RESPAWN_POSITION = new Vector2(0.6f, 10f); //место появления игрока /*new Vector2(175.5f, 9f);*/
     private  ArrayList<Vector2> array_respawn = new ArrayList<Vector2>();
 
     private final TextureAtlas textureAtlas;
@@ -53,9 +53,10 @@ public class SantaGraphicsProcessor implements GraphicsProcessor, Telegraph {
     // private final AnimatedBox2DSprite duckSprite;
     private boolean isFinish;
     public SantaGraphicsProcessor(final AssetManager assets) {
-        //Добавить массив точек воскрешения
         isFinish = false;
-        array_respawn.add(new Vector2(5.5f, 1f));
+        //Добавить массив точек воскрешения
+        array_respawn.add(new Vector2(60.6f,2.4f));
+        array_respawn.add(new Vector2(104.5f,2.5f));
         
         textureAtlas = assets.get(Assets.SANTA_ATLAS);
 
