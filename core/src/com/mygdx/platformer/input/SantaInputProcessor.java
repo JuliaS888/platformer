@@ -23,7 +23,10 @@ public class SantaInputProcessor extends InputAdapter implements Telegraph {
     private final static int JUMP_KEY = Keys.UP;
     private final static int LEFT_KEY = Keys.LEFT;
     private final static int RIGHT_KEY = Keys.RIGHT;
-    private static final int RESET_KEY = Keys.BACKSPACE;
+    
+    private final static int JUMP_KEY1 = Keys.W;
+    private final static int LEFT_KEY1 = Keys.A;
+    private final static int RIGHT_KEY1 = Keys.D;
 
     private final Entity character;
 
@@ -39,16 +42,16 @@ public class SantaInputProcessor extends InputAdapter implements Telegraph {
     public boolean keyDown(final int keycode) {
         switch (keycode) {
         case JUMP_KEY:
+        case JUMP_KEY1:
             character.changeState(SantaState.JUMP);
             break;
         case LEFT_KEY:
+        case LEFT_KEY1:
             character.changeState(SantaState.LEFT);
             break;
         case RIGHT_KEY:
+        case RIGHT_KEY1:
             character.changeState(SantaState.RIGHT);
-            break;
-        case RESET_KEY:
-            MessageManager.getInstance().dispatchMessage(null, MessageType.DEAD.code(), character);
             break;
         default:
             break;
@@ -60,6 +63,7 @@ public class SantaInputProcessor extends InputAdapter implements Telegraph {
     public boolean keyUp(final int keycode) {
         switch (keycode) {
         case JUMP_KEY:
+        case JUMP_KEY1:
             if (Gdx.input.isKeyPressed(RIGHT_KEY)) {
                 character.changeState(SantaState.RIGHT);
             } else if (Gdx.input.isKeyPressed(LEFT_KEY)) {
@@ -69,6 +73,7 @@ public class SantaInputProcessor extends InputAdapter implements Telegraph {
             }
             break;
         case LEFT_KEY:
+        case LEFT_KEY1:
             if (Gdx.input.isKeyPressed(RIGHT_KEY)) {
                 character.changeState(SantaState.RIGHT);
             } else {
@@ -76,6 +81,7 @@ public class SantaInputProcessor extends InputAdapter implements Telegraph {
             }
             break;
         case RIGHT_KEY:
+        case RIGHT_KEY1:
             if (Gdx.input.isKeyPressed(LEFT_KEY)) {
                 character.changeState(SantaState.LEFT);
             } else {
