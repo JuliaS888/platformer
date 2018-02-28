@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.platformer.entity.Entity;
 import com.mygdx.platformer.fsm.SantaState;
 import com.mygdx.platformer.msg.MessageType;
+import com.mygdx.platformer.wind.Wind;
 
 /**
  *
@@ -40,7 +41,7 @@ public class SantaPhysicsProcessor implements PhysicsProcessor {
      * @see ar.uba.fi.game.entity.PhysicsProcessor#update()
      */
     @Override
-    public void update(final Entity character) {
+    public void update(final Entity character,final Wind internalAction) {
         Vector2 position = character.getBody().getWorldCenter();
         Vector2 velocity = character.getBody().getLinearVelocity();
         //character.getBody().setGravityScale(1);
@@ -63,7 +64,7 @@ public class SantaPhysicsProcessor implements PhysicsProcessor {
             if (character.isInState(SantaState.IDLE)) {
                 velocity = character.getBody().getLinearVelocity();
                 stillTime += Gdx.graphics.getDeltaTime();
-                character.getBody().setLinearVelocity(velocity.x * 0.9f, velocity.y);
+                character.getBody().setLinearVelocity(velocity.x * 0.7f/*0.9f*/, velocity.y); //не проскальзывает при остановке игрока
             } else {
                 stillTime = 0.0f;
             }
@@ -71,10 +72,10 @@ public class SantaPhysicsProcessor implements PhysicsProcessor {
             // Disable friction if character is not on ground
             float newFriction = 0.0f;//0.05f;
             if (groundContacts > 0) {
-                if (character.isInState(SantaState.IDLE) && stillTime > 0.2f) {
-                    newFriction = 300.0f;
+                if (character.isInState(SantaState.IDLE) /*&& stillTime > 0.2f*/) {
+                    newFriction = 1f;/*300.0f;*/
                 } else {
-                    newFriction = 0.8f;
+                    newFriction = 0.8f;/*1.0f;*/ //0.8
                 }
             }
 
@@ -83,10 +84,13 @@ public class SantaPhysicsProcessor implements PhysicsProcessor {
             }
 
             // Move character left or right
+            double sss;
             if (character.isInState(SantaState.RIGHT) && velocity.x < MAX_VELOCITY.x) {
-                character.getBody().applyLinearImpulse(LINEAR_VELOCITY * character.getBody().getMass(), 0.0f, position.x, position.y, true);
+                //character.getBody().applyLinearImpulse(LINEAR_VELOCITY * character.getBody().getMass()+0.001f, 0.0f, position.x, position.y, true);
+                character.getBody().setLinearVelocity(7+(float)internalAction.getSpeed(),character.getBody().getLinearVelocity().y);
             } else if (character.isInState(SantaState.LEFT) && velocity.x > -MAX_VELOCITY.x) {
-                character.getBody().applyLinearImpulse(-LINEAR_VELOCITY * character.getBody().getMass(), 0.0f, position.x, position.y, true);
+                //character.getBody().applyLinearImpulse((-1)*LINEAR_VELOCITY * character.getBody().getMass()+0.001f, 0.0f, position.x, position.y, true);
+                character.getBody().setLinearVelocity(-7+(float)internalAction.getSpeed(),character.getBody().getLinearVelocity().y);
             }
 
             // Jump

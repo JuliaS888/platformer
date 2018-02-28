@@ -8,6 +8,7 @@ package com.mygdx.platformer.physics;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.platformer.entity.Entity;
+import com.mygdx.platformer.wind.Wind;
 
 /**
  *
@@ -21,6 +22,6 @@ public interface PhysicsProcessor extends ContactListener, Disposable {
      * @param character
      *            The game entity whose physical properties are to be updated.
      */
-    void update(final Entity character);
+    void update(final Entity character,final Wind internalAction);
 }
 

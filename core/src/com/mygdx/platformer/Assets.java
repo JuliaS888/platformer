@@ -25,4 +25,7 @@ public final class Assets {
     
     public static final AssetDescriptor<Texture> PLATFORM = new AssetDescriptor<Texture>("map/platform.png", Texture.class);
     
+    public static final AssetDescriptor<Texture> ARROW_RIGHT = new AssetDescriptor<Texture>("arrow_logo.png", Texture.class);
+    public static final AssetDescriptor<Texture> ARROW_LEFT = new AssetDescriptor<Texture>("arrow_left_logo.png", Texture.class);
+    public static final AssetDescriptor<Texture> ARROW_AROUND_LOGO = new AssetDescriptor<Texture>("arrow_around_logo.png", Texture.class);
 }

@@ -16,6 +16,7 @@ import com.mygdx.platformer.entity.Collectible;
 import com.mygdx.platformer.entity.Entity;
 import com.mygdx.platformer.fsm.GiftState;
 import com.mygdx.platformer.msg.MessageType;
+import com.mygdx.platformer.wind.Wind;
 
 /**
  *
@@ -71,7 +72,7 @@ public class GiftPhysicsProcessor implements PhysicsProcessor{
     }
 
     @Override
-    public void update(final Entity character) {
+    public void update(final Entity character,final Wind internalAction) {
         Body body = character.getBody();
 
         if (((Collectible) character).isCollected() && ((Collectible) character).isDel()==false) {

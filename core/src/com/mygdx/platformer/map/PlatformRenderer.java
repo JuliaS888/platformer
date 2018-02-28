@@ -369,16 +369,16 @@ public class PlatformRenderer implements Telegraph{
         for (Entity e : platforms) {
             if (viewBounds == null) {
                 e.update(null);
-                e.step(batch);
+                e.step(batch,null);
             } else {
                 Vector2 v = e.getBody().getPosition();
                 if (viewBounds.contains(e.getBody().getPosition())) {
                     e.getBody().setActive(true);
                     e.update(null);
-                    e.step(batch);
+                    e.step(batch,null);
                 } else {
                     //e.getBody().setActive(true);
-                    e.step(batch);
+                    e.step(batch,null);
                     //e.getBody().setActive(false);
                     //e.update(null);                    
                 }

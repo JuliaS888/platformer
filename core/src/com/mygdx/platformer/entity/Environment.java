@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.platformer.graphics.GraphicsProcessor;
 import com.mygdx.platformer.physics.PhysicsProcessor;
 import com.mygdx.platformer.player.PlayerStatusProcessor;
+import com.mygdx.platformer.wind.Wind;
 
 /**
  *
@@ -33,10 +34,10 @@ public class Environment extends Entity {
      * @see ar.uba.fi.game.entity.Entity#step(com.badlogic.gdx.graphics.g2d.Batch)
      */
     @Override
-    public void step(final Batch batch) {
+    public void step(final Batch batch,final Wind internalAction) {
         //player.update(this);
         player.doUpdate(this);
-        super.step(batch);
+        super.step(batch,null);
     }
     
 }

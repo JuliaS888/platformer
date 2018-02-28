@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.platformer.entity.Entity;
 import com.mygdx.platformer.fsm.SantaState;
 import com.mygdx.platformer.msg.MessageType;
+import com.mygdx.platformer.wind.Wind;
 import net.dermetfan.gdx.physics.box2d.Box2DMapObjectParser;
 
 /**
@@ -54,7 +55,7 @@ public class LevelPhysicsProcessor implements PhysicsProcessor {
     }
 
     @Override
-    public void update(final Entity entity) {
+    public void update(final Entity entity,final Wind internalAction) {
         // b2dRenderer.render(world, viewport.getCamera().combined);
         if (entity.getBody() == null) {
             mapObjectListener.getBody().setUserData(entity);

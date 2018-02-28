@@ -136,9 +136,7 @@ public class SantaGraphicsProcessor implements GraphicsProcessor, Telegraph {
         Box2DSprite frame = null;
 
         if (character.isInState(SantaState.JUMP)) {
-            //jumpSprite.flipFrames(!(Direction.RIGHT.equals(character.getDirection()) ^ jumpSprite.isFlipX()), false, false);
-            //frame = jumpSprite;
-            if (!(Direction.RIGHT.equals(character.getDirection())))
+             if (!(Direction.RIGHT.equals(character.getDirection())))
                 frame = runLeftSprite;
             else
                 frame = runRightSprite;
