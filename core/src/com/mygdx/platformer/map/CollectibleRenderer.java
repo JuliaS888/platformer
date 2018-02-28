@@ -91,7 +91,7 @@ public class CollectibleRenderer implements Telegraph {
         for (Entity e : collectibles) {
             if (viewBounds == null) {
                 e.update(null);
-                e.step(batch);
+                e.step(batch,null);
             } else {
                 Body bb = e.getBody();
                 if(e.getBody() != null)
@@ -100,7 +100,7 @@ public class CollectibleRenderer implements Telegraph {
                     if (viewBounds.contains(e.getBody().getPosition())) {
                         e.getBody().setActive(true);
                         e.update(null);
-                        e.step(batch);
+                        e.step(batch,null);
                     } else {
                         e.getBody().setActive(false);
                         //removed.add(e);

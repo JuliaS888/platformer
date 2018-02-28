@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.platformer.entity.Entity;
 import com.mygdx.platformer.entity.Path;
+import com.mygdx.platformer.wind.Wind;
 
 /**
  *
@@ -28,7 +29,7 @@ public class PlatformPhysicsProcessor implements PhysicsProcessor{
         this.path = path;
     }
     @Override
-    public void update(Entity character) {
+    public void update(Entity character,final Wind internalAction) {
         Vector2 vel1 = character.getBody().getLinearVelocity();
          Vector2 v1 = character.getBody().getPosition();
          if(path.updatePath(character.getBody().getPosition())){
@@ -48,10 +49,12 @@ public class PlatformPhysicsProcessor implements PhysicsProcessor{
         
         String PLATFORM_IDENTIFIER = "platform";
         if (contact.getFixtureA().getBody().getFixtureList().size > 1 && PLATFORM_IDENTIFIER.equals(contact.getFixtureA().getBody().getFixtureList().get(1).getUserData())){
-            contact.setFriction(0.8f);
+            //contact.setFriction(0.8f);
+            contact.setFriction(1f);
         }
         else if(contact.getFixtureB().getBody().getFixtureList().size > 1 && PLATFORM_IDENTIFIER.equals(contact.getFixtureB().getBody().getFixtureList().get(1).getUserData())){
-            contact.setFriction(0.8f);
+            //contact.setFriction(0.8f);
+            contact.setFriction(1f);
         }
     }
 

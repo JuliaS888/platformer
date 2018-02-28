@@ -32,6 +32,9 @@ import com.mygdx.platformer.player.LevelPlayerStatusProcessor;
 import com.mygdx.platformer.player.PlayerStatusObserver;
 import com.mygdx.platformer.player.PlayerStatusProcessor;
 import com.mygdx.platformer.player.SantaPlayerStatusProcessor;
+import com.mygdx.platformer.wind.Wind;
+import com.mygdx.platformer.wind.WindStatusObserver;
+import com.mygdx.platformer.wind.WindStatusProcessor;
 
 /**
  *
@@ -137,6 +140,7 @@ public final class EntityFactory {
         world.setContactListener(CONTACT_LISTENER);
         GraphicsProcessor graphics = new LevelGraphicsProcessor(assets, batch, renderer);
         PlayerStatusProcessor player = new LevelPlayerStatusProcessor(status);
+        
         if (observers != null) {
             for (PlayerStatusObserver o : observers) {
                     player.addObserver(o);

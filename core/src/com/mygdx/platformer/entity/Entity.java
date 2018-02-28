@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.platformer.graphics.GraphicsProcessor;
 import com.mygdx.platformer.physics.PhysicsProcessor;
+import com.mygdx.platformer.wind.Wind;
 
 /**
  *
@@ -78,8 +79,8 @@ public abstract class Entity implements Disposable {
      * @param batch
      *            The {@link Batch} to use for drawing.
      */
-    public void step(final Batch batch) {
-            physics.update(this);
+    public void step(final Batch batch,final Wind internalAction) {
+            physics.update(this,internalAction);
             graphics.draw(this, batch);
     }
 

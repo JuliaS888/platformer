@@ -36,6 +36,9 @@ public class PlatformManGame extends Game implements Telegraph {
         assetManager.load(Assets.DEFAULT_BACKGROUND);
         assetManager.load(Assets.NIGHT_BACKGROUND);
         assetManager.load(Assets.PLATFORM);
+        assetManager.load(Assets.ARROW_RIGHT);
+        assetManager.load(Assets.ARROW_LEFT);
+        assetManager.load(Assets.ARROW_AROUND_LOGO);
         assetManager.finishLoading();
         setScreen(new TitleScreen(this));
         addListeners();
