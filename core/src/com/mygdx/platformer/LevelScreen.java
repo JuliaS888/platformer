@@ -14,10 +14,13 @@ import com.mygdx.platformer.entity.Entity;
 import com.mygdx.platformer.entity.EntityFactory;
 import com.mygdx.platformer.graphics.BoundedCamera;
 import com.mygdx.platformer.graphics.StatusBar;
+import com.mygdx.platformer.graphics.WindBar;
 import com.mygdx.platformer.map.LevelFactory;
 import com.mygdx.platformer.map.LevelRenderer;
 import com.mygdx.platformer.physics.BodyEditorLoader;
 import com.mygdx.platformer.player.PlayerStatusObserver;
+import com.mygdx.platformer.wind.Wind;
+import com.mygdx.platformer.wind.WindStatusProcessor;
 
 /**
  *
@@ -36,14 +39,22 @@ public class LevelScreen extends AbstractScreen{
     private final Entity santa;
     private final Entity environment;
     private final StatusBar hud;
+    private final WindBar windHud;
     private float accumulator;
+    private Wind wind;
+    private WindStatusProcessor windProcessor;
         
     public LevelScreen(PlatformManGame game) {
         super(game);
         world = new World(new Vector2(0.0f, GRAVITY), true);
         hud = new StatusBar(game.getBatch(), game.getAssetsManager());
+        windHud = new WindBar(game.getBatch(), game.getAssetsManager());
         BodyEditorLoader bodyLoader = new BodyEditorLoader(Gdx.files.internal(BODIES_DEFINITION_FILE));
         LevelRenderer mapRenderer = LevelFactory.create(world, bodyLoader, game.getBatch(), game.getAssetsManager(), 1 / PlatformManGame.PPM);
+        
+        wind = new Wind();
+        windProcessor = new WindStatusProcessor(wind,5);
+        windProcessor.addObserver(windHud);
         
 	santa = EntityFactory.createSanta(world, bodyLoader, game.getAssetsManager(), game.getPlayerStatus(), hud);
 		
@@ -51,11 +62,8 @@ public class LevelScreen extends AbstractScreen{
         
         viewport = new ScreenViewport();
         viewport.setUnitsPerPixel(1 / PlatformManGame.PPM);
-        viewport.setCamera(new BoundedCamera(0.0f,/*mapRenderer.getTiledMap().getProperties().get("width", Integer.class).floatValue()
-						* mapRenderer.getTiledMap().getProperties().get("tilewidth", Integer.class).floatValue()/ PlatformManGame.PPM*/800f,0.0f,400f));
+        viewport.setCamera(new BoundedCamera(0.0f,800f,0.0f,400f));
         
-        //System.out.println(viewport.getScreenWidth());
-
     }
 
     @Override
@@ -76,14 +84,16 @@ public class LevelScreen extends AbstractScreen{
         game.getBatch().setProjectionMatrix(viewport.getCamera().combined);
         environment.update(viewport.getCamera());
 
+        windProcessor.update();
         game.getBatch().begin();
-        santa.step(game.getBatch());
-        environment.step(game.getBatch());
+        santa.step(game.getBatch(),wind);
+        environment.step(game.getBatch(),null);
         game.getBatch().end();
 
         MessageManager.getInstance().update();
                 
         hud.render();
+        windHud.render();
     }
 
     @Override
