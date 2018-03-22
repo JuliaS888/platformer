@@ -68,11 +68,9 @@ public class LevelScreen extends AbstractScreen implements Telegraph{
         
         wind = new Wind();
         windProcessor = new WindStatusProcessor(wind,5);
-        windProcessor.addObserver(windHud);
+        windProcessor.addObserver(windHud);   
         
-        
-        
-	santa = EntityFactory.createSanta(world, bodyLoader, game.getAssetsManager(), game.getPlayerStatus(), hud);
+        santa = EntityFactory.createSanta(world, bodyLoader, game.getAssetsManager(), game.getPlayerStatus(), hud);
         
         progress = new Progress();
         progressProc = new ProgressStatusProcessor(progress,0,175);

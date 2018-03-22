@@ -30,11 +30,11 @@ public class SantaInputProcessor extends InputAdapter implements Telegraph {
 
     private final Entity character;
 
-    public SantaInputProcessor(final Entity ninjaRabbit) {
-        if (ninjaRabbit == null) {
+    public SantaInputProcessor(final Entity santa) {
+        if (santa == null) {
             throw new IllegalArgumentException("'character' cannot be null");
         }
-        this.character = ninjaRabbit;
+        this.character = santa;
         MessageManager.getInstance().addListener(this, MessageType.EXIT.code());
     }
 
