@@ -33,7 +33,8 @@ public class ModuleLoader extends ClassLoader {
       /**
        * Получем байт-код из файла и загружаем класс в рантайм
        */
-      byte b[] = fetchClassFromFS(pathtobin + className + ".class");
+      //byte b[] = fetchClassFromFS(pathtobin + className + ".class");
+      byte b[] = fetchClassFromFS(pathtobin);
       return defineClass(className, b, 0, b.length);
     } catch (FileNotFoundException ex) {
       return super.findClass(className);

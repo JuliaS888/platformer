@@ -39,7 +39,7 @@ public class ModuleEngine {
                     System.out.print("Executing loading module: ");
                     System.out.println(moduleName);
 
-                    Class clazz = loader.loadClass( "com.mygdx.game.extentions.modules." + moduleName);
+                    Class clazz = loader.loadClass( "com.mygdx.platformer.extension.modules." + moduleName);
                     _execute = (Module) clazz.newInstance();
                     _execute.load(ls);
                 }

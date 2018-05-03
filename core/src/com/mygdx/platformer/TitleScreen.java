@@ -21,6 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.platformer.extension.ModuleEngine;
+import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -29,9 +32,13 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class TitleScreen extends AbstractScreen{
     private static final String TITLE = "Santa's Gifts";
     private static final String BEGIN_OPTION = "Start";
+    private static final String BEGIN_BOT_OPTION = "Bot game";
     private static final String EXIT_OPTION = "Exit game";
-
+    
     private final Stage stage;
+    
+    private static int numButton = 1;
+    public String filePath="";
     public TitleScreen(final PlatformManGame game) {
         super(game);
         
@@ -55,6 +62,8 @@ public class TitleScreen extends AbstractScreen{
         
         final Image exitIcon = new Image(game.getAssetsManager().get(Assets.GIFT_LOGO));
         exitIcon.setVisible(false);
+        final Image beginBotIcon = new Image(game.getAssetsManager().get(Assets.GIFT_LOGO));
+        beginBotIcon.setVisible(false);
         final Image beginIcon = new Image(game.getAssetsManager().get(Assets.GIFT_LOGO));
         
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
@@ -72,6 +81,25 @@ public class TitleScreen extends AbstractScreen{
             public void enter(final InputEvent event, final float x, final float y, final int pointer, final Actor fromActor) {
                 super.enter(event, x, y, pointer, fromActor);
                 beginIcon.setVisible(true);
+                beginBotIcon.setVisible(false);
+                exitIcon.setVisible(false);
+            }
+        });
+        
+        TextButton beginBotButton = new TextButton(BEGIN_BOT_OPTION, buttonStyle);
+        //добавить слушателя
+        beginBotButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(final InputEvent event, final float x, final float y) {
+                startBotGame();
+                //game.setScreen(new LevelScreen(game));
+            }
+
+            @Override
+            public void enter(final InputEvent event, final float x, final float y, final int pointer, final Actor fromActor) {
+                super.enter(event, x, y, pointer, fromActor);
+                beginBotIcon.setVisible(true);
+                beginIcon.setVisible(false);
                 exitIcon.setVisible(false);
             }
         });
@@ -88,12 +116,15 @@ public class TitleScreen extends AbstractScreen{
             public void enter(final InputEvent event, final float x, final float y, final int pointer, final Actor fromActor) {
                 super.enter(event, x, y, pointer, fromActor);
                 beginIcon.setVisible(false);
+                beginBotIcon.setVisible(false);
                 exitIcon.setVisible(true);
             }
         });
         
         table.add(beginIcon);
         table.add(beginButton).right().row();
+        table.add(beginBotIcon);
+        table.add(beginBotButton).right().row();
         table.add(exitIcon);
         table.add(exitButton).right().row();
         table.setFillParent(true);
@@ -104,10 +135,45 @@ public class TitleScreen extends AbstractScreen{
                 switch (keycode) {
                 case Keys.W:
                 case Keys.UP:
+                    if(numButton>1) numButton--;
+                    switch(numButton){
+                        case 1:
+                            beginIcon.setVisible(true);
+                            beginBotIcon.setVisible(false);
+                            exitIcon.setVisible(false);
+                            break;
+                        case 2:                            
+                            beginIcon.setVisible(false);
+                            beginBotIcon.setVisible(true);
+                            exitIcon.setVisible(false);
+                            break;
+                        case 3:
+                            beginIcon.setVisible(false);
+                            beginBotIcon.setVisible(false);
+                            exitIcon.setVisible(true);
+                            break;
+                    }
+                    break;
                 case Keys.S:
                 case Keys.DOWN:
-                    beginIcon.setVisible(!beginIcon.isVisible());
-                    exitIcon.setVisible(!exitIcon.isVisible());
+                    if(numButton<3) numButton++;
+                    switch(numButton){
+                        case 1:
+                            beginIcon.setVisible(true);
+                            beginBotIcon.setVisible(false);
+                            exitIcon.setVisible(false);
+                            break;
+                        case 2:                            
+                            beginIcon.setVisible(false);
+                            beginBotIcon.setVisible(true);
+                            exitIcon.setVisible(false);
+                            break;
+                        case 3:
+                            beginIcon.setVisible(false);
+                            beginBotIcon.setVisible(false);
+                            exitIcon.setVisible(true);
+                            break;
+                    }
                     break;
                 case Keys.SPACE:
                 case Keys.ENTER:
@@ -116,6 +182,9 @@ public class TitleScreen extends AbstractScreen{
                         Gdx.app.exit();
                     } else if (beginIcon.isVisible()) {
                         game.setScreen(new LevelScreen(game));
+                    }else if (beginBotIcon.isVisible()) {
+                        //game.setScreen(new LevelScreen(game));
+                        startBotGame();
                     }
                     break;
                 }
@@ -127,6 +196,35 @@ public class TitleScreen extends AbstractScreen{
         stage.addActor(table);
         stage.setKeyboardFocus(table);
         Gdx.input.setInputProcessor(stage);        
+    }
+    
+    private void startBotGame(){
+        JFileChooser fileopen = new JFileChooser();    
+        String ddd = fileopen.getCurrentDirectory().toString();
+        fileopen.setCurrentDirectory(new File("..\\build\\classes\\main\\com\\mygdx\\platformer\\extension\\modules"));
+        int ret = fileopen.showDialog(null, "Открыть файл");
+        filePath="";
+        if(ret == JFileChooser.APPROVE_OPTION)
+        {
+            filePath =  fileopen.getSelectedFile().getPath();
+            System.out.println(filePath);
+        }
+
+        Gdx.app.postRunnable(new Runnable(){
+           @Override
+           public void run() {
+                if(filePath != ""){
+                    String[] arr = new String[1];
+                    arr[0] = filePath;
+                    //LevelScreen ls = new LevelScreen(game, game.mapsScreen.getMap(), true);
+                    //ModuleEngine.main(arr,ls);
+                    LevelScreen ls = new LevelScreen(game);
+                    ModuleEngine.main(arr,ls);
+                    game.setScreen(ls);
+               }    
+           }
+
+       });
     }
 
     @Override
