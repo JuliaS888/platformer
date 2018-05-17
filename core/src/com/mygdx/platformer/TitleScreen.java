@@ -74,7 +74,7 @@ public class TitleScreen extends AbstractScreen{
         beginButton.addListener(new ClickListener() {
             @Override
             public void clicked(final InputEvent event, final float x, final float y) {
-                game.setScreen(new LevelScreen(game));
+                game.setScreen(new LevelScreen(game,false));
             }
 
             @Override
@@ -181,7 +181,7 @@ public class TitleScreen extends AbstractScreen{
                     if (exitIcon.isVisible()) {
                         Gdx.app.exit();
                     } else if (beginIcon.isVisible()) {
-                        game.setScreen(new LevelScreen(game));
+                        game.setScreen(new LevelScreen(game,false));
                     }else if (beginBotIcon.isVisible()) {
                         //game.setScreen(new LevelScreen(game));
                         startBotGame();
@@ -218,9 +218,10 @@ public class TitleScreen extends AbstractScreen{
                     arr[0] = filePath;
                     //LevelScreen ls = new LevelScreen(game, game.mapsScreen.getMap(), true);
                     //ModuleEngine.main(arr,ls);
-                    LevelScreen ls = new LevelScreen(game);
+                    LevelScreen ls = new LevelScreen(game,true);
                     ModuleEngine.main(arr,ls);
                     game.setScreen(ls);
+                    //ModuleEngine._execute.run(game);
                }    
            }
 

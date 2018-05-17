@@ -6,6 +6,7 @@
 package com.mygdx.platformer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
@@ -14,6 +15,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.platformer.entity.Entity;
 import com.mygdx.platformer.entity.EntityFactory;
+import com.mygdx.platformer.extension.IBot;
+import com.mygdx.platformer.extension.ModuleEngine;
+import com.mygdx.platformer.fsm.SantaState;
 import com.mygdx.platformer.graphics.BoundedCamera;
 import com.mygdx.platformer.graphics.ProgressBar;
 import com.mygdx.platformer.graphics.StatusBar;
@@ -27,12 +31,19 @@ import com.mygdx.platformer.progress.Progress;
 import com.mygdx.platformer.progress.ProgressStatusProcessor;
 import com.mygdx.platformer.wind.Wind;
 import com.mygdx.platformer.wind.WindStatusProcessor;
+//import com.sun.glass.ui.Application;
+//import com.sun.glass.ui.Robot;
+import java.awt.AWTException;
+import java.awt.Robot;
+import static java.awt.event.KeyEvent.VK_RIGHT;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Julia
  */
-public class LevelScreen extends AbstractScreen implements Telegraph{
+public class LevelScreen extends AbstractScreen implements Telegraph,IBot{
     private static final float GRAVITY = -9.8f;
     private static final String BODIES_DEFINITION_FILE = "bodies.json";
 
@@ -55,9 +66,13 @@ public class LevelScreen extends AbstractScreen implements Telegraph{
     private ProgressStatusProcessor progressProc;
     
     private boolean flagEnd;
+    private boolean isBotGame = false;
+    private PlatformManGame PMGame;
     
-    public LevelScreen(PlatformManGame game) {
+    public LevelScreen(PlatformManGame game,boolean isBot) {
         super(game);
+        PMGame = game;
+        isBotGame = isBot;
         world = new World(new Vector2(0.0f, GRAVITY), true);
         hud = new StatusBar(game.getBatch(), game.getAssetsManager());
         windHud = new WindBar(game.getBatch(), game.getAssetsManager());
@@ -93,6 +108,7 @@ public class LevelScreen extends AbstractScreen implements Telegraph{
 
     @Override
     public void render(float delta) {
+        if(isBotGame) ModuleEngine._execute.run(PMGame);
         accumulator += Math.min(delta, 0.25f);
         while (accumulator >= TIME_STEP) {
             world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
@@ -155,6 +171,20 @@ public class LevelScreen extends AbstractScreen implements Telegraph{
     public boolean handleMessage(Telegram tlgrm) {
         flagEnd = true;
         return true;
+    }
+
+    @Override
+    public void runRight() {
+        /*try {
+            Robot robot = new Robot();
+            robot.keyPress(VK_RIGHT);
+            robot.delay(10);
+            robot.keyRelease(VK_RIGHT);
+        } catch (AWTException ex) {
+            Logger.getLogger(LevelScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        santa.changeState(SantaState.RIGHT);
+        //santa.changeState(SantaState.IDLE);
     }
     
 }
