@@ -85,4 +85,18 @@ public class RunBotTest {
         boolean result = bot.isJumpIfWind();
         assertEquals(expResult, result);
     }
+    @org.junit.Test
+    public void testIsJumpIfWind_storm_not_jump() {
+        System.out.println("testIsJumpIfWind_storm_not_jump");        
+        RunBot bot = new RunBot();
+        PlatformManGame game = new PlatformManGame();
+        LevelScreen ls = new LevelScreen(game,true,true);
+        Wind wind = ls.getWind();
+        wind.setSpeed(7);
+        ls.setSantaState(SantaState.LEFT);
+        bot.load(ls);
+        boolean expResult = false;
+        boolean result = bot.isJumpIfWind();
+        assertEquals(expResult, result);
+    }
 }
