@@ -29,7 +29,7 @@ public class Wind implements WindStatus,Poolable{
         reset();
     }
     
-    protected void setSpeed(double speed){
+    public void setSpeed(double speed){
         this.speed = speed;
         if(Math.abs(speed) < 1.75f){
             type =  WindType.calm;

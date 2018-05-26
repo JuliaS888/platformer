@@ -3,19 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mygdx.platformer.extension;
+package com.mygdx.platformer.extension.modules;
 
 import com.mygdx.platformer.fsm.SantaState;
 import com.mygdx.platformer.wind.Wind;
-import com.mygdx.platformer.wind.WindType;
 
 /**
  *
  * @author Julia
  */
-public interface IBot {
-    void runRight();
-    boolean isInStateSanta(SantaState state);
-    WindType getWindType();
-    double getWindSpeed();
+public interface ITest {
+    Wind getWind();
+    void setSantaState(SantaState state);
 }

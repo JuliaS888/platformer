@@ -64,7 +64,8 @@ public abstract class Entity implements Disposable {
      *            The instance of the {@link Camera} used to show things on the screen.
      */
     public void update(final Camera camera) {
-        graphics.update(this, camera);
+        if(graphics != null)
+            graphics.update(this, camera);
         stateMachine.update();
     }
 

@@ -106,7 +106,9 @@ public final class EntityFactory {
         PhysicsProcessor physics = new SantaPhysicsProcessor();
         CONTACT_LISTENER.add(physics);
         world.setContactListener(CONTACT_LISTENER);
-        GraphicsProcessor graphics = new SantaGraphicsProcessor(assets);
+        GraphicsProcessor graphics = null;
+        if(assets!= null)
+            graphics = new SantaGraphicsProcessor(assets);
         BodyProcessor bodyProcessor = new SantaBodyProcessor(world, loader);
         PlayerStatusProcessor player = new SantaPlayerStatusProcessor(status);
         if (observers != null) {
@@ -116,7 +118,8 @@ public final class EntityFactory {
         }
         Santa santa = new Santa(player, bodyProcessor, graphics, physics);
 
-        Gdx.input.setInputProcessor(new SantaInputProcessor(santa));
+        if(assets!= null)
+            Gdx.input.setInputProcessor(new SantaInputProcessor(santa));
         
         return santa;
     }
@@ -138,7 +141,9 @@ public final class EntityFactory {
         PhysicsProcessor physics = new LevelPhysicsProcessor(world, renderer.getTiledMap(), renderer.getUnitScale());
         CONTACT_LISTENER.add(physics);
         world.setContactListener(CONTACT_LISTENER);
-        GraphicsProcessor graphics = new LevelGraphicsProcessor(assets, batch, renderer);
+        GraphicsProcessor graphics = null;
+        if(batch != null)
+             graphics = new LevelGraphicsProcessor(assets, batch, renderer);
         PlayerStatusProcessor player = new LevelPlayerStatusProcessor(status);
         
         if (observers != null) {
@@ -146,6 +151,7 @@ public final class EntityFactory {
                     player.addObserver(o);
             }
         }
+        
         return new Environment(graphics, physics, player);
     }
 
